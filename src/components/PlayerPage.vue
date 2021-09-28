@@ -1,15 +1,41 @@
 <template>
   <section class="player-page">
-    <PlayerWaitingScene class="scene" />
+    <PlayerWaitingScene v-if="isWaiting" class="scene" />
+    <PlayerQuizScene v-if="isGaming" class="scene" :game="game" />
   </section>
 </template>
 
 <script lang="ts">
 import PlayerWaitingScene from "./PlayerWaitingScene.vue";
+import PlayerQuizScene from "./PlayerQuizScene.vue";
 
 export default {
   components: {
     PlayerWaitingScene,
+    PlayerQuizScene,
+  },
+
+  props: {
+    game: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  computed: {
+    /**
+     * 待機中か
+     */
+    isWaiting() {
+      return this.game.state === 1;
+    },
+
+    /**
+     * ゲーム中か
+     */
+    isGaming() {
+      return this.game.state === 2;
+    },
   },
 };
 </script>
