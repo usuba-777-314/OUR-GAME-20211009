@@ -1,16 +1,27 @@
 <template>
-  <div class="player-quiz-scene">
+  <div class="player-quiz-scene" :class="sceneState">
     <PlayerQuizReading class="reading-layer" :quiz="game.quiz" />
+
+    <PlayerQuizAnswering
+      v-if="showsAnsweringLayer"
+      class="answering-layer"
+      :quiz="game.quiz"
+      :choiceNumber="user.choiceNumber"
+      @choice="$emit('choice', $event)"
+    />
+
     <div class="overlay" />
   </div>
 </template>
 
 <script>
 import PlayerQuizReading from "./PlayerQuizReading.vue";
+import PlayerQuizAnswering from "./PlayerQuizAnswering.vue";
 
 export default {
   components: {
     PlayerQuizReading,
+    PlayerQuizAnswering,
   },
 
   props: {
@@ -18,12 +29,34 @@ export default {
       type: Object,
       required: true,
     },
+    user: {
+      type: Object,
+      required: false,
+    },
+  },
+
+  computed: {
+    sceneState() {
+      switch (this.game.state) {
+        case 2:
+          return "player-quiz-scene--reading";
+        case 3:
+          return "player-quiz-scene--answering";
+        default:
+          return "";
+      }
+    },
+
+    showsAnsweringLayer() {
+      return [3].includes(this.game.state);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 $READING_LAYER_Z_INDEX: 10;
+$ANSWERING_LAYER_Z_INDEX: 20;
 
 .player-quiz-scene {
   position: relative;
@@ -38,6 +71,14 @@ $READING_LAYER_Z_INDEX: 10;
   left: 0;
   background-color: rgba($color: #000000, $alpha: 0.6);
   z-index: $READING_LAYER_Z_INDEX - 1;
+
+  .player-quiz-scene--reading & {
+    z-index: $READING_LAYER_Z_INDEX - 1;
+  }
+
+  .player-quiz-scene--answering & {
+    z-index: $ANSWERING_LAYER_Z_INDEX - 1;
+  }
 }
 
 .reading-layer {
@@ -47,5 +88,14 @@ $READING_LAYER_Z_INDEX: 10;
   bottom: 0;
   left: 0;
   z-index: $READING_LAYER_Z_INDEX;
+}
+
+.answering-layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $ANSWERING_LAYER_Z_INDEX;
 }
 </style>

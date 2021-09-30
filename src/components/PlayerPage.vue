@@ -1,7 +1,14 @@
 <template>
   <section class="player-page">
     <PlayerWaitingScene v-if="isWaiting" class="scene" />
-    <PlayerQuizScene v-if="isGaming" class="scene" :game="game" />
+
+    <PlayerQuizScene
+      v-if="isGaming"
+      class="scene"
+      :game="game"
+      :user="user"
+      @choice="$emit('choice', $event)"
+    />
   </section>
 </template>
 
@@ -20,6 +27,10 @@ export default {
       type: Object,
       required: true,
     },
+    user: {
+      type: Object,
+      required: true,
+    },
   },
 
   computed: {
@@ -34,7 +45,7 @@ export default {
      * ゲーム中か
      */
     isGaming() {
-      return [2].includes(this.game.state);
+      return [2, 3].includes(this.game.state);
     },
   },
 };
@@ -46,6 +57,7 @@ export default {
   height: 100vh;
   background-image: url("/assets/player_background.png");
   background-size: cover;
+  overflow: hidden;
 }
 
 .scene {
