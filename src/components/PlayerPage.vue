@@ -1,11 +1,18 @@
 <template>
   <section class="player-page">
     <PlayerWaitingScene v-if="isWaiting" class="scene" />
-    <PlayerQuizScene v-if="isGaming" class="scene" :game="game" />
+
+    <PlayerQuizScene
+      v-if="isGaming"
+      class="scene"
+      :game="game"
+      :choiceNumber="choiceNumber"
+      @choice="$emit('choice', $event)"
+    />
   </section>
 </template>
 
-<script lang="ts">
+<script>
 import PlayerWaitingScene from "./PlayerWaitingScene.vue";
 import PlayerQuizScene from "./PlayerQuizScene.vue";
 
@@ -19,6 +26,10 @@ export default {
     game: {
       type: Object,
       required: true,
+    },
+    choiceNumber: {
+      type: Number,
+      required: false,
     },
   },
 
@@ -34,7 +45,7 @@ export default {
      * ゲーム中か
      */
     isGaming() {
-      return this.game.state === 2;
+      return [2, 3].includes(this.game.state);
     },
   },
 };
@@ -46,6 +57,7 @@ export default {
   height: 100vh;
   background-image: url("/assets/player_background.png");
   background-size: cover;
+  overflow: hidden;
 }
 
 .scene {
