@@ -7,6 +7,7 @@
       class="scene"
       :game="game"
       :choiceNumber="choiceNumber"
+      :correctCount="correctCount"
       @choice="$emit('choice', $event)"
     />
   </section>
@@ -31,6 +32,10 @@ export default {
       type: Number,
       required: false,
     },
+    correctCount: {
+      type: Number,
+      required: false,
+    },
   },
 
   computed: {
@@ -45,7 +50,7 @@ export default {
      * ゲーム中か
      */
     isGaming() {
-      return [2, 3, 4].includes(this.game.state);
+      return [2, 3, 4, 5].includes(this.game.state);
     },
   },
 };
