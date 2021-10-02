@@ -17,6 +17,12 @@
       :choiceNumber="user.choiceNumber"
     />
 
+    <PlayerQuizFinalResult
+      v-if="showsFinalResultLayer"
+      class="final-result-layer"
+      :correctCount="user.correctCount"
+    />
+
     <div class="overlay" />
   </div>
 </template>
@@ -25,12 +31,14 @@
 import PlayerQuizReading from "./PlayerQuizReading.vue";
 import PlayerQuizAnswering from "./PlayerQuizAnswering.vue";
 import PlayerQuizResult from "./PlayerQuizResult.vue";
+import PlayerQuizFinalResult from "./PlayerQuizFinalResult.vue";
 
 export default {
   components: {
     PlayerQuizReading,
     PlayerQuizAnswering,
     PlayerQuizResult,
+    PlayerQuizFinalResult,
   },
 
   props: {
@@ -53,17 +61,23 @@ export default {
           return "player-quiz-scene--answering";
         case 4:
           return "player-quiz-scene--result";
+        case 5:
+          return "player-quiz-scene--final-result";
         default:
           return "";
       }
     },
 
     showsAnsweringLayer() {
-      return [3, 4].includes(this.game.state);
+      return [3, 4, 5].includes(this.game.state);
     },
 
     showsResultLayer() {
-      return [4].includes(this.game.state);
+      return [4, 5].includes(this.game.state);
+    },
+
+    showsFinalResultLayer() {
+      return [5].includes(this.game.state);
     },
   },
 };
@@ -73,6 +87,7 @@ export default {
 $READING_LAYER_Z_INDEX: 10;
 $ANSWERING_LAYER_Z_INDEX: 20;
 $RESULT_LAYER_Z_INDEX: 30;
+$FINAL_RESULT_LAYER_Z_INDEX: 40;
 
 .player-quiz-scene {
   position: relative;
@@ -98,6 +113,10 @@ $RESULT_LAYER_Z_INDEX: 30;
 
   .player-quiz-scene--result & {
     z-index: $RESULT_LAYER_Z_INDEX - 1;
+  }
+
+  .player-quiz-scene--final-result & {
+    z-index: $FINAL_RESULT_LAYER_Z_INDEX - 1;
   }
 }
 
@@ -126,5 +145,14 @@ $RESULT_LAYER_Z_INDEX: 30;
   bottom: 0;
   left: 0;
   z-index: $RESULT_LAYER_Z_INDEX;
+}
+
+.final-result-layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $FINAL_RESULT_LAYER_Z_INDEX;
 }
 </style>
