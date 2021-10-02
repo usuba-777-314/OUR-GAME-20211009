@@ -45,7 +45,7 @@ export default {
      * ゲーム中か
      */
     isGaming() {
-      return [2, 3].includes(this.game.state);
+      return [2, 3, 4].includes(this.game.state);
     },
   },
 };
