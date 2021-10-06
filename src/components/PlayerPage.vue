@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import GameState from "../application/gameState";
 import PlayerWaitingScene from "./PlayerWaitingScene.vue";
 import PlayerQuizScene from "./PlayerQuizScene.vue";
 
@@ -38,14 +39,19 @@ export default {
      * 待機中か
      */
     isWaiting() {
-      return this.game.state === 1;
+      return this.game.state === GameState.WAITING;
     },
 
     /**
      * ゲーム中か
      */
     isGaming() {
-      return [2, 3, 4, 5].includes(this.game.state);
+      return [
+        GameState.QUIZ_READING,
+        GameState.QUIZ_ANSWERING,
+        GameState.QUIZ_RESULT,
+        GameState.QUIZ_FINAL_RESULT,
+      ].includes(this.game.state);
     },
   },
 };

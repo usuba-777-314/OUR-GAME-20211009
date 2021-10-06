@@ -3,7 +3,13 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
 import PlayerPage from "@/components/PlayerPage.vue";
+import store from "@/store";
+import GameRepository from "../infrastructure/gameRepository";
+import QuizRepository from "../infrastructure/quizRepository";
+
+const { mapGetters } = createNamespacedHelpers("playerApp");
 
 export default {
   components: {
@@ -11,41 +17,21 @@ export default {
   },
 
   computed: {
-    game() {
-      return {
-        state: 4,
-        quiz: {
-          number: 1,
-          content:
-            "どこかの研究員から謎の写真が届いた。これはどのステージの一部だろうか？",
-          choices: [
-            {
-              number: 1,
-              text: "Bバスパーク",
-            },
-            {
-              number: 2,
-              text: "Bバスパーク",
-            },
-            {
-              number: 3,
-              text: "Bバスパーク",
-            },
-            {
-              number: 4,
-              text: "Bバスパーク",
-            },
-          ],
-          correct: {
-            number: 1,
-            text: "スプラスコープが答えだ。大雑把なイカたちだが、部屋はきれいに片付けていることが多いそうだ。しかし、その理由は・・・「モテたい」から？",
-          },
-        },
-      };
-    },
+    ...mapGetters(["game"]),
     user() {
       return {};
     },
+  },
+
+  beforeRouteEnter(to, from, next) {
+    store.dispatch("playerApp/setRepositories", {
+      gameRepository: new GameRepository(),
+      quizRepository: new QuizRepository(),
+    });
+
+    store.dispatch("playerApp/setup");
+
+    next();
   },
 };
 </script>

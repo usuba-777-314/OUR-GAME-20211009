@@ -1,3 +1,4 @@
+import GameState from "../application/gameState";
 import PlayerPage from "./PlayerPage";
 
 export default {
@@ -18,7 +19,7 @@ const Template = (args, { argTypes }) => ({
 export const Waiting = Template.bind({});
 Waiting.args = {
   game: {
-    state: 1,
+    state: GameState.WAITING,
     quiz: null,
   },
   user: {},
@@ -27,7 +28,7 @@ Waiting.args = {
 export const Reading = Template.bind({});
 Reading.args = {
   game: {
-    state: 2,
+    state: GameState.QUIZ_READING,
     quiz: {
       number: 1,
     },
@@ -38,7 +39,7 @@ Reading.args = {
 export const Answering = Template.bind({});
 Answering.args = {
   game: {
-    state: 3,
+    state: GameState.QUIZ_ANSWERING,
     quiz: {
       number: 1,
       content:
@@ -71,7 +72,7 @@ Answering.args = {
 export const ResultWithCorrect = Template.bind({});
 ResultWithCorrect.args = {
   game: {
-    state: 4,
+    state: GameState.QUIZ_RESULT,
     quiz: {
       number: 1,
       content:
@@ -108,7 +109,7 @@ ResultWithCorrect.args = {
 export const ResultWithIncorrect = Template.bind({});
 ResultWithIncorrect.args = {
   game: {
-    state: 4,
+    state: GameState.QUIZ_RESULT,
     quiz: {
       number: 1,
       content:
@@ -145,7 +146,7 @@ ResultWithIncorrect.args = {
 export const FinalResult = Template.bind({});
 FinalResult.args = {
   game: {
-    state: 5,
+    state: GameState.QUIZ_FINAL_RESULT,
     quiz: {
       number: 4,
       content:

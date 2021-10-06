@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import GameState from "../application/gameState";
 import PlayerQuizReading from "./PlayerQuizReading.vue";
 import PlayerQuizAnswering from "./PlayerQuizAnswering.vue";
 import PlayerQuizResult from "./PlayerQuizResult.vue";
@@ -55,13 +56,13 @@ export default {
   computed: {
     sceneState() {
       switch (this.game.state) {
-        case 2:
+        case GameState.QUIZ_READING:
           return "player-quiz-scene--reading";
-        case 3:
+        case GameState.QUIZ_ANSWERING:
           return "player-quiz-scene--answering";
-        case 4:
+        case GameState.QUIZ_RESULT:
           return "player-quiz-scene--result";
-        case 5:
+        case GameState.QUIZ_FINAL_RESULT:
           return "player-quiz-scene--final-result";
         default:
           return "";
@@ -69,15 +70,21 @@ export default {
     },
 
     showsAnsweringLayer() {
-      return [3, 4, 5].includes(this.game.state);
+      return [
+        GameState.QUIZ_ANSWERING,
+        GameState.QUIZ_RESULT,
+        GameState.QUIZ_FINAL_RESULT,
+      ].includes(this.game.state);
     },
 
     showsResultLayer() {
-      return [4, 5].includes(this.game.state);
+      return [GameState.QUIZ_RESULT, GameState.QUIZ_FINAL_RESULT].includes(
+        this.game.state
+      );
     },
 
     showsFinalResultLayer() {
-      return [5].includes(this.game.state);
+      return [GameState.QUIZ_FINAL_RESULT].includes(this.game.state);
     },
   },
 };
