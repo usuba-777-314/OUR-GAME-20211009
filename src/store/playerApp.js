@@ -1,4 +1,6 @@
 import GameWatchUseCase from "../application/gameWatchUseCase";
+import UserChoiceLoadUseCase from "../application/userChoiceLoadUseCase";
+import UserChoiceSaveUseCase from "../application/userChoiceSaveUseCase";
 import UserFetchUseCase from "../application/userFetchUseCase";
 import GameState from "../application/gameState";
 
@@ -7,6 +9,8 @@ export const state = {
   gameRepository: null,
   /** クイズリポジトリ */
   quizRepository: null,
+  /** ユーザ選択リポジトリ */
+  userChoiceRepository: null,
   /** ユーザリポジトリ */
   userRepository: null,
   /** ユーザID */
@@ -15,6 +19,8 @@ export const state = {
   user: null,
   /** ゲーム */
   game: null,
+  /** ユーザ選択 */
+  userChoices: null,
 };
 
 export const getters = {
@@ -23,8 +29,15 @@ export const getters = {
     return game;
   },
   /** ユーザ */
-  user({ user }) {
-    return user;
+  user({ user, game, userChoices }) {
+    const { id, name, correctCount } = user;
+
+    return {
+      id,
+      name,
+      correctCount,
+      choiceNumber: userChoices.get(game.quiz?.id),
+    };
   },
 };
 
@@ -41,6 +54,10 @@ export const mutations = {
   userRepository(state, { userRepository }) {
     state.userRepository = userRepository;
   },
+  /** ユーザ選択リポジトリを設定 */
+  userChoiceRepository(state, { userChoiceRepository }) {
+    state.userChoiceRepository = userChoiceRepository;
+  },
   /** ユーザIDを設定 */
   userId(state, { userId }) {
     state.userId = userId;
@@ -53,16 +70,21 @@ export const mutations = {
   game(state, { game }) {
     state.game = game;
   },
+  /** ユーザ選択を設定 */
+  userChoices(state, { userChoices }) {
+    state.userChoices = userChoices;
+  },
 };
 
 export const actions = {
   /** リポジトリを設定する */
   setRepositories(
     { commit },
-    { gameRepository, quizRepository, userRepository }
+    { gameRepository, quizRepository, userChoiceRepository, userRepository }
   ) {
     commit("gameRepository", { gameRepository });
     commit("quizRepository", { quizRepository });
+    commit("userChoiceRepository", { userChoiceRepository });
     commit("userRepository", { userRepository });
   },
 
@@ -71,7 +93,7 @@ export const actions = {
     commit("userId", { userId });
     dispatch("initializeState");
     await dispatch("authentication");
-    dispatch("watchGame");
+    await Promise.all([dispatch("watchGame"), dispatch("loadUserChoices")]);
   },
 
   /** stateを初期化する。 */
@@ -84,6 +106,9 @@ export const actions = {
       quiz: null,
     };
     commit("game", { game });
+
+    const userChoices = new Map();
+    commit("userChoices", { userChoices });
   },
 
   async authentication({ state, commit }) {
@@ -109,6 +134,33 @@ export const actions = {
     gameWatchUseCase.watch().subscribe((game) => {
       commit("game", { game });
     });
+  },
+
+  /** ユーザ選択を読み込む。 */
+  async loadUserChoices({ state, commit }) {
+    const { userChoiceRepository, userId } = state;
+
+    const userChoiceLoadUseCase = new UserChoiceLoadUseCase({
+      userChoiceRepository,
+    });
+    const userChoices = await userChoiceLoadUseCase.load({ userId });
+    commit("userChoices", { userChoices });
+  },
+
+  /** 解答を選択する。 */
+  async choiceAnswer({ state, commit }, { choiceNumber }) {
+    const { userChoiceRepository, userId, game } = state;
+    const { id: quizId } = game.quiz;
+
+    const userChoiceSaveUseCase = new UserChoiceSaveUseCase({
+      userChoiceRepository,
+    });
+    const userChoices = await userChoiceSaveUseCase.save({
+      userId,
+      quizId,
+      choiceNumber,
+    });
+    commit("userChoices", { userChoices });
   },
 };
 

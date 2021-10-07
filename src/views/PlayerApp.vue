@@ -1,5 +1,9 @@
 <template>
-  <PlayerPage :game="game" :user="user" />
+  <PlayerPage
+    :game="game"
+    :user="user"
+    @choice="choiceAnswer({ choiceNumber: $event })"
+  />
 </template>
 
 <script>
@@ -8,9 +12,10 @@ import PlayerPage from "@/components/PlayerPage.vue";
 import store from "@/store";
 import GameRepository from "../infrastructure/gameRepository";
 import QuizRepository from "../infrastructure/quizRepository";
+import UserChoiceRepository from "../infrastructure/userChoiceRepository";
 import UserRepository from "../infrastructure/userRepository";
 
-const { mapGetters } = createNamespacedHelpers("playerApp");
+const { mapGetters, mapActions } = createNamespacedHelpers("playerApp");
 
 export default {
   components: {
@@ -25,6 +30,7 @@ export default {
     store.dispatch("playerApp/setRepositories", {
       gameRepository: new GameRepository(),
       quizRepository: new QuizRepository(),
+      userChoiceRepository: new UserChoiceRepository(),
       userRepository: new UserRepository(),
     });
 
@@ -39,6 +45,10 @@ export default {
     }
 
     next();
+  },
+
+  methods: {
+    ...mapActions(["choiceAnswer"]),
   },
 };
 </script>
