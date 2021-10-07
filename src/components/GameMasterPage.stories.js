@@ -13,7 +13,7 @@ export default {
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   components: { GameMasterPage },
-  template: `<GameMasterPage v-bind="$props" />`,
+  template: `<GameMasterPage v-bind="$props" @next="next" />`,
 });
 
 export const Waiting = Template.bind({});

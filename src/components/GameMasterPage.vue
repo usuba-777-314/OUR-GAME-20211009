@@ -6,6 +6,7 @@
       v-if="showsTopResultInfo"
       :top-result="topResult"
     />
+    <GameMasterOperateButton :game="game" @click="$emit('next')" />
   </section>
 </template>
 
@@ -14,12 +15,14 @@ import GameState from "../application/gameState";
 import GameMasterGameState from "./GameMasterGameState.vue";
 import GameMasterQuizInfo from "./GameMasterQuizInfo.vue";
 import GameMasterTopResultInfo from "./GameMasterTopResultInfo.vue";
+import GameMasterOperateButton from "./GameMasterOperateButton.vue";
 
 export default {
   components: {
     GameMasterGameState,
     GameMasterQuizInfo,
     GameMasterTopResultInfo,
+    GameMasterOperateButton,
   },
 
   props: {
@@ -51,14 +54,27 @@ export default {
 
 <style lang="scss" scoped>
 .game-master-page {
+  width: 100vw;
+  height: 100vh;
   padding: 16px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .game-master-quiz-info {
   margin-top: 16px;
+  flex-grow: 1;
 }
 
 .game-master-top-result-info {
+  margin-top: 16px;
+  flex-grow: 1;
+}
+
+.game-master-operate-button {
   margin-top: 16px;
 }
 </style>
