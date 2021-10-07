@@ -1,6 +1,7 @@
-import { collection, doc, getDoc, updateDoc } from "@firebase/firestore";
+import { collection, doc, getDoc, query, updateDoc } from "@firebase/firestore";
 import User from "../application/user";
 import db from "./db";
+import observableBuilder from "./observableBuilder";
 
 /** ユーザコンバータ */
 const userConverter = {
@@ -24,6 +25,11 @@ const usersRef = collection(db, "users").withConverter(userConverter);
 
 /** ユーザリポジトリ */
 export default class UserRepository {
+  /** 全てのユーザ情報を監視する。 */
+  watchAll() {
+    return observableBuilder.buildFromQuery(query(usersRef));
+  }
+
   /** ユーザ情報を取得する。 */
   async fetch({ userId }) {
     const snapshot = await getDoc(doc(usersRef, userId));

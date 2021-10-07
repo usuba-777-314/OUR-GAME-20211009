@@ -12,6 +12,7 @@ import GameMasterPage from "@/components/GameMasterPage.vue";
 import store from "@/store";
 import GameRepository from "../infrastructure/gameRepository";
 import QuizRepository from "../infrastructure/quizRepository";
+import UserRepository from "../infrastructure/userRepository";
 
 const { mapGetters } = createNamespacedHelpers("gameMasterApp");
 
@@ -21,10 +22,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["game"]),
-    topResult() {
-      return null;
-    },
+    ...mapGetters(["game", "topResult"]),
     isProcessing() {
       return false;
     },
@@ -34,6 +32,7 @@ export default {
     store.dispatch("gameMasterApp/setRepositories", {
       gameRepository: new GameRepository(),
       quizRepository: new QuizRepository(),
+      userRepository: new UserRepository(),
     });
 
     store.dispatch("gameMasterApp/setup");
