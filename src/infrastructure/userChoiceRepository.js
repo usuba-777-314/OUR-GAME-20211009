@@ -3,6 +3,11 @@ import store, { StoreKey } from "./store";
 
 /** ユーザ選択リポジトリ */
 export default class UserChoiceRepository {
+  /** ユーザ選択情報を保持しているか。 */
+  async hasUserChoices() {
+    return store.get(StoreKey.USER_CHOICES) != null;
+  }
+
   /** ユーザ選択情報を読み込む。 */
   load() {
     const data = store.get(StoreKey.USER_CHOICES);

@@ -1,4 +1,4 @@
-import { collection, doc, getDoc } from "@firebase/firestore";
+import { collection, doc, getDoc, updateDoc } from "@firebase/firestore";
 import User from "../application/user";
 import db from "./db";
 
@@ -28,5 +28,10 @@ export default class UserRepository {
   async fetch({ userId }) {
     const snapshot = await getDoc(doc(usersRef, userId));
     return snapshot.data();
+  }
+
+  /** 正解数を更新する。 */
+  async updateCorrectCount({ userId, correctCount }) {
+    await updateDoc(doc(usersRef, userId), { correctCount });
   }
 }

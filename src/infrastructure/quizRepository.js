@@ -1,4 +1,4 @@
-import { collection, query } from "@firebase/firestore";
+import { collection, getDocs, query } from "@firebase/firestore";
 import Quiz, { QuizChoice, QuizCorrect } from "../application/quiz";
 import db from "./db";
 import observableBuilder from "./observableBuilder";
@@ -44,5 +44,11 @@ export default class QuizRepository {
   /** 全てのクイズ情報を監視する。 */
   watchAll() {
     return observableBuilder.buildFromQuery(query(quizzesRef));
+  }
+
+  /** クイズ情報リストを取得する。 */
+  async queryAll() {
+    const snapshot = await getDocs(query(quizzesRef));
+    return snapshot.docs.map((d) => d.data());
   }
 }

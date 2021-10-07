@@ -1,4 +1,6 @@
+import CorrectCountCalculateUseCase from "../application/correctCountCalculateUseCase";
 import GameWatchUseCase from "../application/gameWatchUseCase";
+import UserChoiceClearUseCase from "../application/userChoiceClearUseCase";
 import UserChoiceLoadUseCase from "../application/userChoiceLoadUseCase";
 import UserChoiceSaveUseCase from "../application/userChoiceSaveUseCase";
 import UserFetchUseCase from "../application/userFetchUseCase";
@@ -124,15 +126,19 @@ export const actions = {
   },
 
   /** ゲームを監視する。 */
-  watchGame({ state, commit }) {
+  watchGame({ state, commit, dispatch }) {
     const { gameRepository, quizRepository } = state;
 
     const gameWatchUseCase = new GameWatchUseCase({
       gameRepository,
       quizRepository,
     });
+
     gameWatchUseCase.watch().subscribe((game) => {
       commit("game", { game });
+
+      dispatch("clearUserChoicesIfNeeded");
+      dispatch("calculateCorrectCountIfNeeded");
     });
   },
 
@@ -161,6 +167,61 @@ export const actions = {
       choiceNumber,
     });
     commit("userChoices", { userChoices });
+  },
+
+  /** 必要があれば、ユーザ選択をクリアする。 */
+  async clearUserChoicesIfNeeded({ state, dispatch }) {
+    const { game } = state;
+
+    const isStart =
+      game.state === GameState.WAITING ||
+      (game.state === GameState.QUIZ_READING && game.quiz.number === 1);
+    if (!isStart) return;
+
+    await dispatch("clearUserChoices");
+  },
+
+  /** ユーザ選択をクリアする。 */
+  async clearUserChoices({ state, commit }) {
+    const { userChoiceRepository, userId } = state;
+
+    const userChoiceClearUseCase = new UserChoiceClearUseCase({
+      userChoiceRepository,
+    });
+    const userChoices = await userChoiceClearUseCase.clear({ userId });
+    commit("userChoices", { userChoices });
+  },
+
+  /** 必要があれば、正解数を計算する。 */
+  async calculateCorrectCountIfNeeded({ state, dispatch }) {
+    const { game } = state;
+
+    const ended =
+      game.state === GameState.QUIZ_FINAL_RESULT ||
+      (game.state === GameState.QUIZ_RESULT && game.quiz.number === 4);
+    if (!ended) return;
+
+    await dispatch("calculateCorrectCount");
+  },
+
+  /** 正解数を計算する。 */
+  async calculateCorrectCount({ state, commit }) {
+    const { quizRepository, userChoiceRepository, userRepository, userId } =
+      state;
+
+    const correctCountCalculateUseCase = new CorrectCountCalculateUseCase({
+      quizRepository,
+      userChoiceRepository,
+      userRepository,
+    });
+
+    const needsCalculate = await correctCountCalculateUseCase.needsCalculate({
+      userId,
+    });
+    if (!needsCalculate) return;
+
+    const user = await correctCountCalculateUseCase.calculate({ userId });
+    commit("user", { user });
   },
 };
 
