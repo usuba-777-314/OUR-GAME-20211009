@@ -3,6 +3,7 @@
     :game="game"
     :top-result="topResult"
     :is-processing="isProcessing"
+    @next="nextGameState"
   />
 </template>
 
@@ -14,7 +15,7 @@ import GameRepository from "../infrastructure/gameRepository";
 import QuizRepository from "../infrastructure/quizRepository";
 import UserRepository from "../infrastructure/userRepository";
 
-const { mapGetters } = createNamespacedHelpers("gameMasterApp");
+const { mapGetters, mapActions } = createNamespacedHelpers("gameMasterApp");
 
 export default {
   components: {
@@ -22,10 +23,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["game", "topResult"]),
-    isProcessing() {
-      return false;
-    },
+    ...mapGetters(["game", "topResult", "isProcessing"]),
   },
 
   async beforeRouteEnter(to, from, next) {
@@ -38,6 +36,10 @@ export default {
     store.dispatch("gameMasterApp/setup");
 
     next();
+  },
+
+  methods: {
+    ...mapActions(["nextGameState"]),
   },
 };
 </script>

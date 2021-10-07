@@ -1,4 +1,10 @@
-import { collection, query } from "@firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+} from "@firebase/firestore";
 import { map } from "rxjs";
 import Game from "../application/game";
 import db from "./db";
@@ -33,5 +39,16 @@ export default class GameRepository {
     return observableBuilder
       .buildFromQuery(query(gamesRef))
       .pipe(map((games) => games[0]));
+  }
+
+  /** ゲームを取得する。 */
+  async fetch() {
+    const snapshot = await getDocs(query(gamesRef));
+    return snapshot.docs[0]?.data();
+  }
+
+  /** ゲームの状態を更新する。 */
+  async updateState({ id, state, quizNumber }) {
+    await updateDoc(doc(gamesRef, id), { state, quizNumber });
   }
 }

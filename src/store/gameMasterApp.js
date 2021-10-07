@@ -1,4 +1,5 @@
 import GameState from "../application/gameState";
+import GameStateNextUseCase from "../application/gameStateNextUseCase";
 import GameWatchUseCase from "../application/gameWatchUseCase";
 import TopResultWatchUseCase from "../application/topResultWatchUseCase";
 
@@ -13,6 +14,8 @@ export const state = {
   game: null,
   /** 最優秀者情報 */
   topResult: null,
+  /** 処理中か */
+  isProcessing: false,
 };
 
 export const getters = {
@@ -23,6 +26,10 @@ export const getters = {
   /** 最優秀者情報 */
   topResult({ topResult }) {
     return topResult;
+  },
+  /** 処理中か */
+  isProcessing({ isProcessing }) {
+    return isProcessing;
   },
 };
 
@@ -46,6 +53,10 @@ export const mutations = {
   /** 最優秀者情報を設定 */
   topResult(state, { topResult }) {
     state.topResult = topResult;
+  },
+  /** 処理中かを設定 */
+  isProcessing(state, { isProcessing }) {
+    state.isProcessing = isProcessing;
   },
 };
 
@@ -77,6 +88,9 @@ export const actions = {
 
     const topResult = { correctCount: 0, users: [] };
     commit("topResult", { topResult });
+
+    const isProcessing = false;
+    commit("isProcessing", { isProcessing });
   },
 
   /** ゲームを監視する。 */
@@ -104,6 +118,18 @@ export const actions = {
     topResultWatchUseCase.watch().subscribe((topResult) => {
       commit("topResult", { topResult });
     });
+  },
+
+  /** ゲームの状態を次に進める。 */
+  async nextGameState({ state, commit }) {
+    const { gameRepository } = state;
+
+    commit("isProcessing", { isProcessing: true });
+
+    const gameStateNextUseCase = new GameStateNextUseCase({ gameRepository });
+    await gameStateNextUseCase.next();
+
+    commit("isProcessing", { isProcessing: false });
   },
 };
 
