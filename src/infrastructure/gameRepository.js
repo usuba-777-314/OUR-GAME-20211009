@@ -11,14 +11,15 @@ const gameConverter = {
     return {
       state: game.state,
       quizNumber: game.quizNumber,
+      remainingTime: game.remainingTime,
     };
   },
 
   /** Firestoreのsnapshotからゲームオブジェクトに変換する */
   fromFirestore(snapshot, options) {
     const { id } = snapshot;
-    const { state, quizNumber } = snapshot.data(options);
-    return new Game({ id, state, quizNumber });
+    const { state, quizNumber, remainingTime } = snapshot.data(options);
+    return new Game({ id, state, quizNumber, remainingTime });
   },
 };
 

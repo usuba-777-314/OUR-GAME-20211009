@@ -15,9 +15,9 @@ export default class GameFetchUseCase {
 
     return combineLatest({ game, quizzes }).pipe(
       map(({ game, quizzes }) => {
-        const { id, state, quizNumber } = game;
+        const { id, state, quizNumber, remainingTime } = game;
         const quiz = quizzes.find((q) => q.number === quizNumber);
-        return new GameWatchOutput({ id, state, quiz });
+        return new GameWatchOutput({ id, state, quiz, remainingTime });
       })
     );
   }
@@ -26,9 +26,10 @@ export default class GameFetchUseCase {
 /** ゲーム情報取得結果 */
 class GameWatchOutput {
   /** ゲーム情報取得結果を生成する。 */
-  constructor({ id, state, quiz }) {
+  constructor({ id, state, quiz, remainingTime }) {
     this.id = id;
     this.state = state;
     this.quiz = quiz;
+    this.remainingTime = remainingTime;
   }
 }
