@@ -11,7 +11,7 @@ const routes = [
     component: Home,
   },
   {
-    path: "/player_app",
+    path: "/player_app/:userId",
     name: "PlayerApp",
     component: () =>
       import(/* webpackChunkName: "player" */ "@/views/PlayerApp.vue"),
@@ -24,6 +24,13 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  },
+  {
+    path: "/not_found",
+    name: "NotFound",
+    component: () =>
+      import(/* webpackChunkName: "not_found" */ "../views/NotFound.vue"),
+    alias: "*",
   },
 ];
 
