@@ -9,6 +9,8 @@
       :user="user"
       @choice="$emit('choice', $event)"
     />
+
+    <PlayerWelcomeMessage :user="user" />
   </section>
 </template>
 
@@ -16,11 +18,13 @@
 import GameState from "../application/gameState";
 import PlayerWaitingScene from "./PlayerWaitingScene.vue";
 import PlayerQuizScene from "./PlayerQuizScene.vue";
+import PlayerWelcomeMessage from "./PlayerWelcomeMessage.vue";
 
 export default {
   components: {
     PlayerWaitingScene,
     PlayerQuizScene,
+    PlayerWelcomeMessage,
   },
 
   props: {

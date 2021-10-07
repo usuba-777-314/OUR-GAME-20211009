@@ -22,7 +22,9 @@ Waiting.args = {
     state: GameState.WAITING,
     quiz: null,
   },
-  user: {},
+  user: {
+    name: "井川 一二三",
+  },
 };
 
 export const Reading = Template.bind({});
@@ -33,7 +35,9 @@ Reading.args = {
       number: 1,
     },
   },
-  user: {},
+  user: {
+    name: "井川 一二三",
+  },
 };
 
 export const Answering = Template.bind({});
@@ -65,6 +69,7 @@ Answering.args = {
     },
   },
   user: {
+    name: "井川 一二三",
     choiceNumber: 1,
   },
 };
@@ -102,6 +107,7 @@ ResultWithCorrect.args = {
     },
   },
   user: {
+    name: "井川 一二三",
     choiceNumber: 1,
   },
 };
@@ -139,6 +145,7 @@ ResultWithIncorrect.args = {
     },
   },
   user: {
+    name: "井川 一二三",
     choiceNumber: 2,
   },
 };
@@ -176,6 +183,7 @@ FinalResult.args = {
     },
   },
   user: {
+    name: "井川 一二三",
     choiceNumber: 2,
     correctCount: 3,
   },
