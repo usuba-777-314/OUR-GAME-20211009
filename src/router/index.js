@@ -17,6 +17,14 @@ const routes = [
       import(/* webpackChunkName: "player" */ "@/views/PlayerApp.vue"),
   },
   {
+    path: "/game_master_app",
+    name: "GameMasterApp",
+    component: () =>
+      import(
+        /* webpackChunkName: "gameMasterApp" */ "@/views/GameMasterApp.vue"
+      ),
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting
