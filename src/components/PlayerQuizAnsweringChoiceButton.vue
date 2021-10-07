@@ -2,7 +2,7 @@
   <button
     class="player-quiz-answering-choice-button"
     :class="buttonClass"
-    v-text="`${choice.number}. ${choice.text}`"
+    v-text="choice.text"
     @click="$emit('choice', choice.number)"
   />
 </template>
