@@ -22,6 +22,7 @@ Waiting.args = {
     state: GameState.WAITING,
     quiz: null,
   },
+  topResult: null,
 };
 
 export const Reading = Template.bind({});
@@ -56,6 +57,7 @@ Reading.args = {
       },
     },
   },
+  topResult: null,
 };
 
 export const Answering = Template.bind({});
@@ -91,6 +93,7 @@ Answering.args = {
       },
     },
   },
+  topResult: null,
 };
 
 export const Result = Template.bind({});
@@ -125,6 +128,7 @@ Result.args = {
       },
     },
   },
+  topResult: null,
 };
 
 export const FinalResult = Template.bind({});
@@ -158,5 +162,12 @@ FinalResult.args = {
         text: "スプラスコープが答えだ。大雑把なイカたちだが、部屋はきれいに片付けていることが多いそうだ。しかし、その理由は・・・「モテたい」から？",
       },
     },
+  },
+  topResult: {
+    correctCount: 4,
+    users: [
+      { id: "a", name: "user aaaa" },
+      { id: "b", name: "user bbbbb" },
+    ],
   },
 };
