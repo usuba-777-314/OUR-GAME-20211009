@@ -14,7 +14,7 @@ export default class TopResultWatchUseCase {
         const correctCounts = allUsers
           .map((u) => u.correctCount)
           .filter((c) => c != null);
-        const correctCount = Math.max(...correctCounts);
+        const correctCount = Math.max(...correctCounts, 0);
         const users = allUsers.filter((u) => u.correctCount === correctCount);
         return new TopResultWatchOutput({ correctCount, users });
       })
