@@ -5,7 +5,7 @@
     <PlayerQuizAnswering
       v-if="showsAnsweringLayer"
       class="answering-layer"
-      :quiz="game.quiz"
+      :game="game"
       :choiceNumber="user.choiceNumber"
       @choice="$emit('choice', $event)"
     />
@@ -59,6 +59,7 @@ export default {
         case GameState.QUIZ_READING:
           return "player-quiz-scene--reading";
         case GameState.QUIZ_ANSWERING:
+          if (this.game.remainingTime === 0) return "player-quiz-scene--result";
           return "player-quiz-scene--answering";
         case GameState.QUIZ_RESULT:
           return "player-quiz-scene--result";

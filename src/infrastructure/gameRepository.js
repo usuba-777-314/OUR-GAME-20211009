@@ -51,4 +51,9 @@ export default class GameRepository {
   async updateState({ id, state, quizNumber }) {
     await updateDoc(doc(gamesRef, id), { state, quizNumber });
   }
+
+  /** ゲームの残り時間を更新する。 */
+  async updateRemainingTime({ id, remainingTime }) {
+    await updateDoc(doc(gamesRef, id), { remainingTime });
+  }
 }
