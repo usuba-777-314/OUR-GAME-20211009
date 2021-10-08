@@ -49,7 +49,11 @@ export default class GameRepository {
 
   /** ゲームの状態を更新する。 */
   async updateState({ id, state, quizNumber }) {
-    await updateDoc(doc(gamesRef, id), { state, quizNumber });
+    await updateDoc(doc(gamesRef, id), {
+      state,
+      quizNumber,
+      remainingTime: null,
+    });
   }
 
   /** ゲームの残り時間を更新する。 */
