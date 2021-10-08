@@ -11,7 +11,10 @@ export default class TopResultWatchUseCase {
   watch() {
     return this.userRepository.watchAll().pipe(
       map((allUsers) => {
-        const correctCount = Math.max(...allUsers.map((u) => u.correctCount));
+        const correctCounts = allUsers
+          .map((u) => u.correctCount)
+          .filter((c) => c != null);
+        const correctCount = Math.max(...correctCounts);
         const users = allUsers.filter((u) => u.correctCount === correctCount);
         return new TopResultWatchOutput({ correctCount, users });
       })
