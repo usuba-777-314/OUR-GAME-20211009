@@ -23,6 +23,16 @@ const routes = [
       import(
         /* webpackChunkName: "gameMasterApp" */ "@/views/GameMasterApp.vue"
       ),
+    props: { isGameMaster: true },
+  },
+  {
+    path: "/sub_game_master_app",
+    name: "SubGameMasterApp",
+    component: () =>
+      import(
+        /* webpackChunkName: "gameMasterApp" */ "@/views/GameMasterApp.vue"
+      ),
+    props: { isGameMaster: false },
   },
   {
     path: "/about",

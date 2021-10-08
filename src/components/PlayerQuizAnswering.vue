@@ -1,5 +1,6 @@
 <template>
   <div class="player-quiz-answering">
+    <img class="reamining-time" :src="remainingTimeImage" />
     <div class="quiz">{{ quiz.content }}</div>
 
     <PlayerQuizAnsweringChoiceButton
@@ -21,13 +22,25 @@ export default {
   },
 
   props: {
-    quiz: {
+    game: {
       type: Object,
       required: true,
     },
     choiceNumber: {
       type: Number,
       required: false,
+    },
+  },
+
+  computed: {
+    quiz() {
+      return this.game.quiz;
+    },
+    remainingTimeImage() {
+      if (this.game.remainingTime == null)
+        return `/assets/player_quiz_remaining_time_10.png`;
+
+      return `/assets/player_quiz_remaining_time_${this.game.remainingTime}.png`;
     },
   },
 };
@@ -42,8 +55,13 @@ export default {
   flex-flow: column;
 }
 
+.reamining-time {
+  align-self: center;
+  margin-bottom: 1px;
+}
+
 .quiz {
-  height: 160px;
+  height: 120px;
   line-height: 150%;
 
   border-radius: 16px;

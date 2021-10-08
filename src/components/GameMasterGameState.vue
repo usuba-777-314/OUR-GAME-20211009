@@ -12,7 +12,9 @@
     <template v-if="isQuizAnswering">
       <span>{{ `第${game.quiz.number}問` }}</span>
       <span>クイズ解答中</span>
-      <span>{{ `残り${game.remainingTime}秒` }}</span>
+      <span v-if="game.remainingTime != null">{{
+        `残り${game.remainingTime}秒`
+      }}</span>
     </template>
 
     <template v-if="isQuizResult">

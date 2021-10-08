@@ -6,7 +6,11 @@
       v-if="showsTopResultInfo"
       :top-result="topResult"
     />
-    <GameMasterOperateButton :game="game" @click="$emit('next')" />
+    <GameMasterOperateButton
+      v-if="isGameMaster"
+      :game="game"
+      @click="$emit('next')"
+    />
     <div v-if="isProcessing" class="overlay">処理中です...</div>
   </section>
 </template>
@@ -38,6 +42,11 @@ export default {
     isProcessing: {
       type: Boolean,
       required: true,
+    },
+    isGameMaster: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 

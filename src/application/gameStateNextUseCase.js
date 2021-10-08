@@ -1,3 +1,4 @@
+import { interval, map, take } from "rxjs";
 import gameState from "./gameState";
 import GameState from "./gameState";
 
@@ -28,6 +29,7 @@ export default class GameStateNextUseCase {
         state: gameState.QUIZ_ANSWERING,
         quizNumber: game.quizNumber,
       });
+      this.startCountdown({ gameId: id });
       return;
     }
 
@@ -66,5 +68,23 @@ export default class GameStateNextUseCase {
       });
       return;
     }
+  }
+
+  /** カウントダウンを始める。 */
+  startCountdown({ gameId: id }) {
+    const initialValue = 10;
+
+    this.gameRepository.updateRemainingTime({
+      id,
+      remainingTime: initialValue,
+    });
+
+    interval(1000)
+      .pipe(take(initialValue))
+      .pipe(map((index) => index + 1))
+      .pipe(map((count) => initialValue - count))
+      .subscribe((remainingTime) => {
+        this.gameRepository.updateRemainingTime({ id, remainingTime });
+      });
   }
 }

@@ -67,6 +67,42 @@ Answering.args = {
         },
       ],
     },
+    remainingTime: 10,
+  },
+  user: {
+    name: "井川 一二三",
+    choiceNumber: 1,
+  },
+};
+
+export const RemainingTimeIsZero = Template.bind({});
+RemainingTimeIsZero.args = {
+  game: {
+    state: GameState.QUIZ_ANSWERING,
+    quiz: {
+      number: 1,
+      content:
+        "どこかの研究員から謎の写真が届いた。これはどのステージの一部だろうか？",
+      choices: [
+        {
+          number: 1,
+          text: "Bバスパーク",
+        },
+        {
+          number: 2,
+          text: "Bバスパーク",
+        },
+        {
+          number: 3,
+          text: "Bバスパーク",
+        },
+        {
+          number: 4,
+          text: "Bバスパーク",
+        },
+      ],
+    },
+    remainingTime: 0,
   },
   user: {
     name: "井川 一二三",
