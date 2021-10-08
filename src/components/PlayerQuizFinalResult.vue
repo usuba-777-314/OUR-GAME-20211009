@@ -9,7 +9,8 @@ export default {
   props: {
     correctCount: {
       type: Number,
-      required: true,
+      required: false,
+      default: 0,
     },
   },
 
