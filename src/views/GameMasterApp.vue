@@ -3,6 +3,7 @@
     :game="game"
     :top-result="topResult"
     :is-processing="isProcessing"
+    :is-game-master="isGameMaster"
     @next="nextGameState"
   />
 </template>
@@ -20,6 +21,13 @@ const { mapGetters, mapActions } = createNamespacedHelpers("gameMasterApp");
 export default {
   components: {
     GameMasterPage,
+  },
+
+  props: {
+    isGameMaster: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   computed: {

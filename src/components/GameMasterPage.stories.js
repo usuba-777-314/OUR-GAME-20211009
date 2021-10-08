@@ -24,6 +24,7 @@ Waiting.args = {
   },
   topResult: null,
   isProcessing: false,
+  isGameMaster: true,
 };
 
 export const Reading = Template.bind({});
@@ -60,6 +61,7 @@ Reading.args = {
   },
   topResult: null,
   isProcessing: false,
+  isGameMaster: true,
 };
 
 export const Answering = Template.bind({});
@@ -97,6 +99,7 @@ Answering.args = {
   },
   topResult: null,
   isProcessing: false,
+  isGameMaster: true,
 };
 
 export const Result = Template.bind({});
@@ -133,6 +136,7 @@ Result.args = {
   },
   topResult: null,
   isProcessing: false,
+  isGameMaster: true,
 };
 
 export const FinalResult = Template.bind({});
@@ -175,6 +179,7 @@ FinalResult.args = {
     ],
   },
   isProcessing: false,
+  isGameMaster: true,
 };
 
 export const IsProcessing = Template.bind({});
@@ -211,4 +216,5 @@ IsProcessing.args = {
   },
   topResult: null,
   isProcessing: true,
+  isGameMaster: true,
 };
